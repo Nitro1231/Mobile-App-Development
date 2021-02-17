@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, Image } from "react-native";
 
 // NPM packs
-import CurrencyFlag from "react-currency-flags";
+//import CurrencyFlag from "react-currency-flags";
 import getCurrencySymbol from "currency-symbol-map";
 
 export default class App extends Component {
@@ -22,9 +22,10 @@ export default class App extends Component {
     // TODO: add currency calculation method via API.
     return (
       <View style={styles.mainBox}>
-        <View style={styles.flag}>
-          <CurrencyFlag currency={this.state.code} size="xl" />
-        </View>
+        <Image
+          style={styles.flag}
+          source={{uri:`https://github.com/transferwise/currency-flags/blob/master/src/flags/${this.state.code.toLowerCase()}.png?raw=true`}}
+        />
         <Text style={styles.h1}>{this.state.code}</Text>
         <Text style={styles.h1}>{getCurrencySymbol(this.state.code)}</Text>
         <TextInput
@@ -42,9 +43,10 @@ export default class App extends Component {
     // TODO: add currency calculation method via API.
     return (
       <View style={styles.itemBox}>
-        <View style={styles.flag}>
-          <CurrencyFlag currency={currencyCode} size="xl" />
-        </View>
+        <Image
+          style={styles.flag}
+          source={{uri:`https://github.com/transferwise/currency-flags/blob/master/src/flags/${currencyCode.toLowerCase()}.png?raw=true`}}
+        />
         <Text style={styles.h1}>{currencyCode}</Text>
         <Text style={styles.h1}>{`${getCurrencySymbol(
           currencyCode
@@ -72,7 +74,9 @@ export default class App extends Component {
           {this.getItem("INR", "7,288.16")}
         </View>
 
-        <View style={styles.addBtn}>+</View>
+        <View style={styles.addBtn}>
+          <Text style={styles.addText}>+</Text>
+        </View>
       </View>
     );
   }
@@ -90,7 +94,7 @@ const styles = StyleSheet.create({
   },
   h1: {
     color: "#f0f0f0",
-    fontSize: "3vh",
+    fontSize: 18,
     fontWeight: "bold",
   },
   topBar: {
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#f0f0f0",
-    fontSize: "4vh",
+    fontSize: 30,
     fontWeight: "bold",
     marginLeft: "5vw",
   },
@@ -111,13 +115,17 @@ const styles = StyleSheet.create({
     bottom: "5vw",
     width: "15vw",
     height: "15vw",
-    fontSize: "10vw",
-    fontWeight: "bold",
     borderRadius: "15vw",
     backgroundColor: "#9c88ff",
     boxShadow: "2px 2px 10px 5px #121212",
     alignItems: "center",
     justifyContent: "center",
+  },
+  addText:{
+    fontSize: 40,
+    lineHeight: 40,
+    fontWeight: "bold",
+    color: '#f0f0f0'
   },
   mainBox: {
     display: "inline-grid",
@@ -143,7 +151,7 @@ const styles = StyleSheet.create({
   },
   itemBox: {
     display: "inline-grid",
-    gridTemplateColumns: "20vw auto auto",
+    gridTemplateColumns: "18vw auto auto",
     alignItems: "center",
     width: "70vw",
     height: "10vh",
@@ -154,9 +162,8 @@ const styles = StyleSheet.create({
   },
   flag: {
     width: "10vw",
-    height: "auto",
-    marginLeft: "5vw",
-    marginRight: "5vw",
+    height: "10vw",
+    marginLeft: "4vw",
     borderRadius: "2vw",
     boxShadow: "0px 0px 10px 2px #222222",
     overflow: "hidden",

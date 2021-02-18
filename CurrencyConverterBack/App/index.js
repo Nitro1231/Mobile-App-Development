@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, Image } from "react-native";
 
 // NPM packs
-//import CurrencyFlag from "react-currency-flags";
+// import CurrencyFlag from "react-currency-flags";
 import getCurrencySymbol from "currency-symbol-map";
 
 export default class App extends Component {
@@ -48,9 +48,9 @@ export default class App extends Component {
           source={{uri:`https://github.com/transferwise/currency-flags/blob/master/src/flags/${currencyCode.toLowerCase()}.png?raw=true`}}
         />
         <Text style={styles.h1}>{currencyCode}</Text>
-        <Text style={styles.h1}>{`${getCurrencySymbol(
-          currencyCode
-        )} ${amount}`}</Text>
+        <Text style={styles.h1}>
+          {`${getCurrencySymbol(currencyCode)} ${amount}`}
+        </Text>
       </View>
     );
   }
@@ -115,9 +115,9 @@ const styles = StyleSheet.create({
     bottom: "5vw",
     width: "15vw",
     height: "15vw",
-    borderRadius: "15vw",
+    borderRadius: 15,
     backgroundColor: "#9c88ff",
-    boxShadow: "2px 2px 10px 5px #121212",
+    //boxShadow: "2px 2px 10px 5px #121212",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -128,14 +128,15 @@ const styles = StyleSheet.create({
     color: '#f0f0f0'
   },
   mainBox: {
-    display: "inline-grid",
-    gridTemplateColumns: "20vw auto auto auto",
+    display: "flex",
+    flexDirection: 'row',
+    //gridTemplateColumns: "20vw auto auto auto",
     alignItems: "center",
     width: "86vw",
     height: "12vh",
     margin: "7vw",
-    borderRadius: "5vw",
-    boxShadow: "0px 4px 20px 5px #121212",
+    borderRadius: 5,
+    //boxShadow: "0px 4px 20px 5px #121212",
     backgroundColor: "#9c88ff",
   },
   inputBox: {
@@ -150,22 +151,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemBox: {
-    display: "inline-grid",
-    gridTemplateColumns: "18vw auto auto",
+    //display: "inline-grid",
+    //gridTemplateColumns: "18vw auto auto",
     alignItems: "center",
     width: "70vw",
     height: "10vh",
     margin: "2vw",
-    borderRadius: "5vw",
-    boxShadow: "0px 4px 20px 5px #121212",
+    borderRadius: 5,
+    //boxShadow: "0px 4px 20px 5px #121212",
     backgroundColor: "#3E3E3E",
   },
   flag: {
     width: "10vw",
     height: "10vw",
     marginLeft: "4vw",
-    borderRadius: "2vw",
-    boxShadow: "0px 0px 10px 2px #222222",
+    borderRadius: 2,
+    //boxShadow: "0px 0px 10px 2px #222222",
     overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",

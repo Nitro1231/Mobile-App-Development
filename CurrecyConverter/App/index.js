@@ -1,6 +1,13 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, TextInput, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  ScrollView,
+} from "react-native";
 
 import Options from "./screens/Options";
 
@@ -17,7 +24,11 @@ export default function App() {
   const onChangeValue = (value) => {
     // TODO: add currency calculation method via API.
     const num = parseInt(value.replace(/[^0-9]/g, ""));
-    setState((num === undefined) ? 0:num)
+    setState(num === undefined ? 0 : num);
+  };
+
+  const getFlag = (code) => {
+    return `https://github.com/transferwise/currency-flags/blob/master/src/flags/${code.toLowerCase()}.png?raw=true`
   };
 
   const getMain = () => {
@@ -26,10 +37,12 @@ export default function App() {
       <View style={[styles.mainItem, styles.shadow]}>
         <Image
           style={styles.mainFlag}
-          source={{uri:`https://github.com/transferwise/currency-flags/blob/master/src/flags/${state.code.toLowerCase()}.png?raw=true`}}
+          source={{uri: getFlag(state.code)}}
         />
         <Text style={[styles.h1, styles.flexBox1]}>{state.code}</Text>
-        <Text style={[styles.h1, styles.flexBox1]}>{getCurrencySymbol(state.code)}</Text>
+        <Text style={[styles.h1, styles.flexBox1]}>
+          {getCurrencySymbol(state.code)}
+        </Text>
         <TextInput
           style={[styles.h1, styles.inputBox]}
           keyboardType="numeric"
@@ -47,7 +60,9 @@ export default function App() {
       <View style={[styles.subItem, styles.shadow]}>
         <Image
           style={styles.subFlag}
-          source={{uri:`https://github.com/transferwise/currency-flags/blob/master/src/flags/${currencyCode.toLowerCase()}.png?raw=true`}}
+          source={{
+            uri: getFlag(currencyCode),
+          }}
         />
         <Text style={[styles.h1, styles.flexBox1]}>{currencyCode}</Text>
         <Text style={[styles.h1, styles.flexBox3]}>
@@ -58,30 +73,37 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <View style={styles.topBar}>
-        <Text style={styles.title}>Currecy Converter</Text>
+    <>
+      <View style={styles.container}>
+        <StatusBar style="auto" />
+        <View style={styles.topBar}>
+          <Text style={styles.title}>Currecy Converter</Text>
+        </View>
+        <View style={styles.mainBox}>
+          {getMain()}
+        </View>
+        <ScrollView
+          style={styles.itemBox}
+          contentContainerStyle={{ alignItems: "center" }}
+        >
+          {getSubItem("EUR", "82.72")}
+          {getSubItem("GBP", "71.98")}
+          {getSubItem("KRW", "110,832.19")}
+          {getSubItem("JPY", "10,600.63")}
+          {getSubItem("CNY", "645.69")}
+          {getSubItem("INR", "7,288.16")}
+        </ScrollView>
+        <View style={[styles.addBtn, styles.shadow]}>
+          <Text style={styles.addText}>+</Text>
+        </View>
+        <Options />
       </View>
-      <View style={styles.mainBox}>
-        {getMain()}
-        {/* <View style={[styles.mainItem, styles.shadow]}></View> */}
-      </View>
-      <ScrollView style={styles.itemBox} contentContainerStyle={{alignItems: 'center'}}>
-        {getSubItem("EUR", "82.72")}
-        {getSubItem("GBP", "71.98")}
-        {getSubItem("KRW", "110,832.19")}
-        {getSubItem("JPY", "10,600.63")}
-        {getSubItem("CNY", "645.69")}
-        {getSubItem("INR", "7,288.16")}
-      </ScrollView>
-      <View style={[styles.addBtn, styles.shadow]}>
-        <Text style={styles.addText}>+</Text>
-      </View>
-    </View>
+    </>
   );
 }
 
+// alignItems: "center",
+// justifyContent: "center",
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -118,11 +140,11 @@ const styles = StyleSheet.create({
   },
   flexBox1: {
     flex: 1,
-    textAlign: "center"
+    textAlign: "center",
   },
   flexBox3: {
     flex: 3,
-    textAlign: "center"
+    textAlign: "center",
   },
   mainItem: {
     flexDirection: "row",
@@ -154,6 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#9c88ff",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 3
   },
   addText: {
     fontSize: 40,
@@ -163,7 +186,7 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     flex: 3,
-    textAlign: "center"
+    textAlign: "center",
   },
   mainFlag: {
     width: 60,

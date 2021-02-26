@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  TouchableHighlight
 } from "react-native";
 
 import Options from "./screens/Options";
@@ -15,11 +16,10 @@ import Options from "./screens/Options";
 import getCurrencySymbol from "currency-symbol-map";
 
 export default function App() {
-  state = {
-    code: "USD",
-    amount: 100,
-    amountInUSD: 100,
-  };
+  const [code, setCode] = useState({ code: "USD" });
+  const [amount, setAmount] = useState({ amount: 100 });
+  const [amountInUSD, setAmountInUSD] = useState({ amountInUSD: 100 });
+  const [options, setOptions] = useState({ options: false });
 
   const onChangeValue = (value) => {
     // TODO: add currency calculation method via API.
@@ -28,26 +28,23 @@ export default function App() {
   };
 
   const getFlag = (code) => {
-    return `https://github.com/transferwise/currency-flags/blob/master/src/flags/${code.toLowerCase()}.png?raw=true`
+    return `https://github.com/transferwise/currency-flags/blob/master/src/flags/${code.toLowerCase()}.png?raw=true`;
   };
 
   const getMain = () => {
     // TODO: add currency calculation method via API.
     return (
       <View style={[styles.mainItem, styles.shadow]}>
-        <Image
-          style={styles.mainFlag}
-          source={{uri: getFlag(state.code)}}
-        />
-        <Text style={[styles.h1, styles.flexBox1]}>{state.code}</Text>
+        <Image style={styles.mainFlag} source={{ uri: getFlag(code.code) }} />
+        <Text style={[styles.h1, styles.flexBox1]}>{code.code}</Text>
         <Text style={[styles.h1, styles.flexBox1]}>
-          {getCurrencySymbol(state.code)}
+          {getCurrencySymbol(code.code)}
         </Text>
         <TextInput
           style={[styles.h1, styles.inputBox]}
           keyboardType="numeric"
           onChangeText={(value) => onChangeValue(value)}
-          value={`${state.amount}`}
+          value={`${amount.amount}`}
           maxLength={10}
         />
       </View>
@@ -78,10 +75,18 @@ export default function App() {
         <StatusBar style="auto" />
         <View style={styles.topBar}>
           <Text style={styles.title}>Currecy Converter</Text>
+          <TouchableHighlight
+            style={styles.options}
+            onPress={() => setOptions({ options: true })}
+          >
+            <View style={styles.optionsBox}>
+              <View style={styles.optionsBtn} />
+              <View style={styles.optionsBtn} />
+              <View style={styles.optionsBtn} />
+            </View>
+          </TouchableHighlight>
         </View>
-        <View style={styles.mainBox}>
-          {getMain()}
-        </View>
+        <View style={styles.mainBox}>{getMain()}</View>
         <ScrollView
           style={styles.itemBox}
           contentContainerStyle={{ alignItems: "center" }}
@@ -93,10 +98,10 @@ export default function App() {
           {getSubItem("CNY", "645.69")}
           {getSubItem("INR", "7,288.16")}
         </ScrollView>
+        {options.options ? <Options style={styles.overlay} func={setOptions.bind(this)} /> : <View />}
         <View style={[styles.addBtn, styles.shadow]}>
           <Text style={styles.addText}>+</Text>
         </View>
-        <Options />
       </View>
     </>
   );
@@ -119,7 +124,8 @@ const styles = StyleSheet.create({
     //flex: 1,
     height: 80,
     backgroundColor: "#202225",
-    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
   },
   mainBox: {
     height: 150,
@@ -176,7 +182,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#9c88ff",
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 3
+    zIndex: 2,
   },
   addText: {
     fontSize: 40,
@@ -205,6 +211,28 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",
+  },
+  overlay: {
+    zIndex: 3
+  },
+  options: {
+    marginTop: 30,
+    marginRight: 10,
+    marginLeft: "auto",
+  },
+  optionsBox: {
+    width: 50,
+    height: 50,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  optionsBtn: {
+    width: 8,
+    height: 8,
+    margin: 2,
+    borderRadius: 10,
+    backgroundColor: "#f0f0f0",
   },
   shadow: {
     shadowColor: "#000",
